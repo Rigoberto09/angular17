@@ -1,0 +1,93 @@
+<!-- estilos de primeflex -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/primeflex@latest/primeflex.css"
+/>
+
+<div class="grid formulario">
+  <div class="col">
+    <div class="grid">
+      <div class="col-12 md:col-6 lg:col-3">
+        <span class="p-float-label">
+          <input pInputText id="username" [(ngModel)]="primerNombre" />
+          <label for="username">{{ nombre1 }}</label>
+        </span>
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <span class="p-float-label">
+          <input pInputText id="username" [(ngModel)]="segundoNombre" />
+          <label for="username">{{ nombre2 }}</label>
+        </span>
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <span class="p-float-label">
+          <input pInputText id="username" [(ngModel)]="primerApellido" />
+          <label for="username">{{ apellido1 }}</label>
+        </span>
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <span class="p-float-label">
+          <input pInputText id="username" [(ngModel)]="segundoApellido" />
+          <label for="username">{{ apellido2 }}</label>
+        </span>
+      </div>
+    </div>
+    <br>
+
+    <div class="grid">
+      <div class="col-12 md:col-6 lg:col-6 segundaseccionFormulario">
+        <span class="p-float-label">
+          <input pInputText id="username" [(ngModel)]="dereccionCompleta" />
+          <label for="username">{{ direcion }}</label>
+        </span>
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <span class="p-float-label">
+          <input pInputText id="username" [(ngModel)]="correoElectronico" />
+          <label for="username">{{ correo }}</label>
+        </span>
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <span class="p-float-label">
+          <input pInputText id="username" [(ngModel)]="celular" />
+          <label for="username">Numero Celular</label>
+        </span>
+      </div>
+    </div>
+    <br>
+    <div class="grid botonGuardar">
+        <div class="col-12 md:col-6 lg:col-9">
+            <input pInputText id="username" [(ngModel)]="primerNombre" [disabled]="true" placeholder="Registros totales "/>
+        </div>
+        <div class="col-12 md:col-6 lg:col-3">
+            <p-button label="Guardar" (onClick)="agregarDatos()"></p-button>
+        </div>
+      </div>
+    
+  </div>
+</div>
+<div class="card">
+    <p-table [value]="cliente"  [customSort]="true" [tableStyle]="{'min-width': '60rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="code" style="width:20%">Nombre completo <p-sortIcon field="code"></p-sortIcon></th>
+                <th pSortableColumn="name" style="width:20%">Direccion <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="category" style="width:20%">Correo <p-sortIcon field="category"></p-sortIcon></th>
+                <th pSortableColumn="quantity" style="width:20%">Numero <p-sortIcon field="quantity"></p-sortIcon></th>
+                <th pSortableColumn="price" style="width:20%">Accion</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-clientes>
+            <tr>
+                <td>{{clientes.primer_nombre}}
+                    {{clientes.segundo_nombre}}
+                    {{clientes.primer_apellido}}
+                    {{clientes.segundo_apellido}}</td>
+                <td>{{clientes.direccion}}</td>
+                <td>{{clientes.correo}}</td>
+                <td>{{clientes.telefono}}</td>
+                <td><p-button label="Eliminar" [raised]="true" severity="danger"></p-button></td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

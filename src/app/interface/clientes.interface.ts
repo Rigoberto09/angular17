@@ -11,4 +11,4 @@ export interface Cliente {
     usuario_creo: string;
     usuario_borro: string | null;
   }
-  
+  // export interface cadenas:string;
