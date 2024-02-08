@@ -95,31 +95,28 @@ correoElectronico: any;
       usuario_creo: "Borjas",
       usuario_borro: null
     };
-
-    this.clienteservice.postCliente(nuevoCliente).subscribe(
-      response => {
-        console.log('Cliente creado con éxito:', response);
-        // Realiza cualquier acción adicional que necesites aquí
-      },
-      error => {
-        console.error('Error al crear cliente:', error);
-        // Maneja el error aquí si es necesario
+    if(!this.primerApellido||!this.primerApellido||!this.segundoApellido||!this.dereccionCompleta||!this.correo||!this.celular){
+      return;
+    }
+    this.clienteservice.postCliente(nuevoCliente).subscribe({
+      next:(response)=>{
+        console.log("datos ingresados",response);
+        
+        this.ngOnInit();
+      },error:(err)=>{
+        console.log("no se puedo ingresar",err);
       }
+    }
     );
-    this.ngOnInit();
   }
   eliminarCliente(id: number) {
-    this.clienteservice.deleteCliente(id).subscribe(
-      response => {
-        console.log('Cliente eliminado con éxito:', response);
-
+    this.clienteservice.deleteCliente(id).subscribe({
+      next:(response)=>{
+        console.log("elemento eliminado",response);
         this.ngOnInit();
-        // Realiza cualquier acción adicional que necesites aquí
+      },error(err) {
+          console.log("no se puedo eliminar",err);
       },
-      error => {
-        console.error('Error al eliminar cliente:', error);
-        // Maneja el error aquí si es necesario
-      }
-    );
+    });
   }
 }
