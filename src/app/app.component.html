@@ -5,29 +5,30 @@
 />
 
 <div class="grid formulario">
+  
   <div class="col">
     <div class="grid">
       <div class="col-12 md:col-6 lg:col-3">
         <span class="p-float-label">
-          <input pInputText id="username" [(ngModel)]="primerNombre" />
+          <input pInputText id="username" [(ngModel)]="primerNombre" (ngModelChange)="primerNombre = $event.toUpperCase()" />
           <label for="username">{{ nombre1 }}</label>
         </span>
       </div>
       <div class="col-12 md:col-6 lg:col-3">
         <span class="p-float-label">
-          <input pInputText id="username" [(ngModel)]="segundoNombre" />
+          <input pInputText id="username" [(ngModel)]="segundoNombre" (ngModelChange)="segundoNombre = $event.toUpperCase()"/>
           <label for="username">{{ nombre2 }}</label>
         </span>
       </div>
       <div class="col-12 md:col-6 lg:col-3">
         <span class="p-float-label">
-          <input pInputText id="username" [(ngModel)]="primerApellido" />
+          <input pInputText id="username" [(ngModel)]="primerApellido" (ngModelChange)="primerApellido = $event.toUpperCase()" />
           <label for="username">{{ apellido1 }}</label>
         </span>
       </div>
       <div class="col-12 md:col-6 lg:col-3">
         <span class="p-float-label">
-          <input pInputText id="username" [(ngModel)]="segundoApellido" />
+          <input pInputText id="username" [(ngModel)]="segundoApellido" (ngModelChange)="segundoApellido = $event.toUpperCase()" />
           <label for="username">{{ apellido2 }}</label>
         </span>
       </div>
@@ -37,7 +38,7 @@
     <div class="grid">
       <div class="col-12 md:col-6 lg:col-6 segundaseccionFormulario">
         <span class="p-float-label">
-          <input pInputText id="username" [(ngModel)]="dereccionCompleta" />
+          <input pInputText id="username" [(ngModel)]="dereccionCompleta" (ngModelChange)="dereccionCompleta = $event.toUpperCase()"/>
           <label for="username">{{ direcion }}</label>
         </span>
       </div>
@@ -49,7 +50,8 @@
       </div>
       <div class="col-12 md:col-6 lg:col-3">
         <span class="p-float-label">
-          <input pInputText id="username" [(ngModel)]="celular" />
+          <!-- <input pInputText [(ngModel)]="celular" /> -->
+          <p-inputMask mask="9999-9999" [(ngModel)]="celular" placeholder="9999-9999"></p-inputMask>
           <label for="username">Numero Celular</label>
         </span>
       </div>
@@ -57,37 +59,132 @@
     <br>
     <div class="grid botonGuardar">
         <div class="col-12 md:col-6 lg:col-9">
-            <input pInputText id="username" [(ngModel)]="primerNombre" [disabled]="true" placeholder="Registros totales "/>
+            <input pInputText id="username" [disabled]="true" placeholder="Registros totales a la fecha {{contadorRegistros}} "/>
         </div>
         <div class="col-12 md:col-6 lg:col-3">
+          
             <p-button label="Guardar" (onClick)="agregarDatos();crearCliente()"></p-button>
         </div>
       </div>
     
   </div>
 </div>
-<div class="card">
-    <p-table [value]="cliente"  [customSort]="true" [tableStyle]="{'min-width': '60rem'}">
+<div class="card tabla">
+  
+    <p-table 
+    #dt1
+    dataKey="id"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    
+
+    [value]="cliente"  [customSort]="true" [tableStyle]="{'min-width': '60rem'}"
+    [paginator]="true"
+    currentPageReportTemplate="Clientes {first} de {last} of {totalRecords} Clientes"
+    [globalFilterFields]="['primer_nombre', 'direccion', 'correo', 'telefono']"
+    >
+    <ng-template pTemplate="caption">
+      <div class="flex">
+          <!-- <p>Clientes</p> -->
+          <span class="p-input-icon-left ml-auto">
+              <i class="pi pi-search"></i>
+               <input #clientesBuscar pInputText type="text" (input)="dt1.filterGlobal(clientesBuscar.value, 'contains')"
+                placeholder="Buscar" />
+          </span>
+      </div>
+  </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="code" style="width:20%">Nombre completo <p-sortIcon field="code"></p-sortIcon></th>
-                <th pSortableColumn="name" style="width:20%">Direccion <p-sortIcon field="name"></p-sortIcon></th>
-                <th pSortableColumn="category" style="width:20%">Correo <p-sortIcon field="category"></p-sortIcon></th>
-                <th pSortableColumn="quantity" style="width:20%">Numero <p-sortIcon field="quantity"></p-sortIcon></th>
-                <th pSortableColumn="price" style="width:20%">Accion</th>
+                <th pSortableColumn="primer_nombre" style="width:20%">Nombre completo <p-sortIcon field="primer_nombre"></p-sortIcon></th>
+                <th pSortableColumn="direccion" style="width:auto">Direccion <p-sortIcon field="direccion"></p-sortIcon></th>
+                <th pSortableColumn="correo" style="width:20%">Correo <p-sortIcon field="correo"></p-sortIcon></th>
+                <th pSortableColumn="telefono" style="width:15%">Numero <p-sortIcon field="telefono"></p-sortIcon></th>
+                <th style="width:10px">Accion</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-clientes>
             <tr>
-                <td>{{clientes.primer_nombre}}
+
+              <td [pEditableColumn]="clientes.primer_nombre" pEditableColumnField="primer_nombre">
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input pInputText type="text" [(ngModel)]="clientes.primer_nombre" 
+                        (ngModelChange)="clientes.primer_nombre = $event.toUpperCase()"
+                        (keydown.enter)="actualizarDato(clientes.id_cliente,clientes)"/>
+                        <input pInputText type="text" [(ngModel)]="clientes.segundo_nombre" 
+                        (ngModelChange)="clientes.segundo_nombre = $event.toUpperCase()" 
+                        (keydown.enter)="actualizarDato(clientes.id_cliente,clientes)"/>
+                        <input pInputText type="text" [(ngModel)]="clientes.primer_apellido" 
+                        (ngModelChange)="clientes.primer_apellido = $event.toUpperCase()"
+                        (keydown.enter)="actualizarDato(clientes.id_cliente,clientes)"/>
+                        <input pInputText type="text" [(ngModel)]="clientes.segundo_apellido" 
+                        (ngModelChange)="clientes.segundo_apellido = $event.toUpperCase()"
+                        (keydown.enter)="actualizarDato(clientes.id_cliente,clientes)"/>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{clientes.primer_nombre}}
+                      {{clientes.segundo_nombre}}
+                      {{clientes.primer_apellido}}
+                      {{clientes.segundo_apellido}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+
+                <!-- <td>{{clientes.primer_nombre}}
                     {{clientes.segundo_nombre}}
                     {{clientes.primer_apellido}}
-                    {{clientes.segundo_apellido}}</td>
-                <td>{{clientes.direccion}}</td>
-                <td>{{clientes.correo}}</td>
-                <td>{{clientes.telefono}}</td>
+                    {{clientes.segundo_apellido}}
+                  </td> -->
+                <!-- <td>{{clientes.direccion}}</td> -->
+                <td [pEditableColumn]="clientes.direccion" pEditableColumnField="direccion">
+                  <p-cellEditor>
+                      <ng-template pTemplate="input">
+                          <input pInputText type="text" [(ngModel)]="clientes.direccion" 
+                          style="width: 100%" 
+                          (ngModelChange)="clientes.direccion = $event.toUpperCase()"
+                          (keydown.enter)="actualizarDato(clientes.id_cliente,clientes)"
+                          />
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{clientes.direccion}}
+                      </ng-template>
+                  </p-cellEditor>
+              </td>
+                <!-- <td>{{clientes.correo}}</td> -->
+                <td [pEditableColumn]="clientes.correo" pEditableColumnField="correo">
+                  <p-cellEditor>
+                      <ng-template pTemplate="input">
+                          <input pInputText type="text" [(ngModel)]="clientes.correo" 
+                          style="width: 100%" 
+                          (keydown.enter)="actualizarDato(clientes.id_cliente,clientes)"/>
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{clientes.correo}}
+                      </ng-template>
+                  </p-cellEditor>
+              </td>
+                <!-- <td>{{clientes.telefono}}</td> -->
+                <td [pEditableColumn]="clientes.telefono" pEditableColumnField="telefono">
+                  <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <p-inputMask mask="9999-9999" 
+                        [(ngModel)]="clientes.telefono"
+                        placeholder="9999-9999"
+                        (keydown.enter)="actualizarDato(clientes.id_cliente,clientes)"></p-inputMask>
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{clientes.telefono}}
+                      </ng-template>
+                  </p-cellEditor>
+              </td>
                 <td><p-button label="Eliminar" [raised]="true" severity="danger" (onClick)="eliminarCliente(clientes.id_cliente);"></p-button></td>
             </tr>
         </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+              <td colspan="7">No customers found.</td>
+          </tr>
+      </ng-template>
     </p-table>
 </div>
