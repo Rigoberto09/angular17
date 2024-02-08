@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ClientesService } from './clientes.service';
-import { Cliente } from './interface/clientes.interface';
+import { Cliente, ClienteInset } from './interface/clientes.interface';
 // variables con valor statito
 import{Formulario}from './interface/valores'
 // importacion de modulos de primeNG
@@ -59,6 +59,7 @@ correoElectronico: any;
   ngOnInit(): void {
     this.clienteservice.getClientes().subscribe({
       next: (Cliente) => {
+        this.cliente=Cliente;
         console.log("respuesta",Cliente);
         // this.cliente = response.clientes;
         console.log("aqui");
@@ -72,23 +73,53 @@ correoElectronico: any;
   title = 'Crud';
   agregarDatos(){
     // Crear un nuevo cliente
-let nuevoCliente: Cliente = {
-  id_cliente: 1,
-  primer_nombre: this.primerNombre,
-  segundo_nombre: this.segundoNombre,
-  primer_apellido: this.primerApellido,
-  segundo_apellido: this.segundoApellido,
-  direccion: this.dereccionCompleta,
-  telefono: this.celular.toString(),
-  correo: this.correoElectronico,
-  fecha_registro: Date.now.toString(),
-  usuario_creo: "Borjas",
-  usuario_borro: null // Opcionalmente, puedes establecerlo en null o algún valor por defecto
-};
+// const nuevoCliente: ClienteInset = {
+//  // Opcionalmente, puedes establecerlo en null o algún valor por defecto
+// };
 
-// Agregar el nuevo cliente al array
-this.cliente.push(nuevoCliente);
-console.log(this.cliente); // Output: ["dato1", "dato2", "dato3", "dato4", "dato5", ["dato6", "dato7"]]
+// // Agregar el nuevo cliente al array
+// this.cliente.push(nuevoCliente);
+// console.log(this.cliente); // Output: ["dato1", "dato2", "dato3", "dato4", "dato5", ["dato6", "dato7"]]
 
+  }
+  crearCliente() {
+    const nuevoCliente: ClienteInset = {
+      primer_nombre: this.primerNombre,
+      segundo_nombre: this.segundoNombre,
+      primer_apellido: this.primerApellido,
+      segundo_apellido: this.segundoApellido,
+      direccion: this.dereccionCompleta,
+      telefono: this.celular.toString(),
+      correo: this.correoElectronico,
+      fecha_registro: '',
+      usuario_creo: "Borjas",
+      usuario_borro: null
+    };
+
+    this.clienteservice.postCliente(nuevoCliente).subscribe(
+      response => {
+        console.log('Cliente creado con éxito:', response);
+        // Realiza cualquier acción adicional que necesites aquí
+      },
+      error => {
+        console.error('Error al crear cliente:', error);
+        // Maneja el error aquí si es necesario
+      }
+    );
+    this.ngOnInit();
+  }
+  eliminarCliente(id: number) {
+    this.clienteservice.deleteCliente(id).subscribe(
+      response => {
+        console.log('Cliente eliminado con éxito:', response);
+
+        this.ngOnInit();
+        // Realiza cualquier acción adicional que necesites aquí
+      },
+      error => {
+        console.error('Error al eliminar cliente:', error);
+        // Maneja el error aquí si es necesario
+      }
+    );
   }
 }
