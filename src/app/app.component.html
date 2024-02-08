@@ -121,6 +121,8 @@
                         <input pInputText type="text" [(ngModel)]="clientes.segundo_apellido" 
                         (ngModelChange)="clientes.segundo_apellido = $event.toUpperCase()"
                         (keydown.enter)="actualizarDato(clientes.id_cliente,clientes)"/>
+                        <br>
+                        <span>Enter para guardar registro</span>
                     </ng-template>
                     <ng-template pTemplate="output">
                       {{clientes.primer_nombre}}
@@ -145,6 +147,8 @@
                           (ngModelChange)="clientes.direccion = $event.toUpperCase()"
                           (keydown.enter)="actualizarDato(clientes.id_cliente,clientes)"
                           />
+                          <br>
+                        <span>Enter para guardar registro</span>
                       </ng-template>
                       <ng-template pTemplate="output">
                         {{clientes.direccion}}
@@ -158,6 +162,8 @@
                           <input pInputText type="text" [(ngModel)]="clientes.correo" 
                           style="width: 100%" 
                           (keydown.enter)="actualizarDato(clientes.id_cliente,clientes)"/>
+                          <br>
+                        <span>Enter para guardar registro</span>
                       </ng-template>
                       <ng-template pTemplate="output">
                         {{clientes.correo}}
@@ -172,6 +178,8 @@
                         [(ngModel)]="clientes.telefono"
                         placeholder="9999-9999"
                         (keydown.enter)="actualizarDato(clientes.id_cliente,clientes)"></p-inputMask>
+                        <br>
+                        <span>Enter para guardar registro</span>
                       </ng-template>
                       <ng-template pTemplate="output">
                         {{clientes.telefono}}

@@ -140,6 +140,16 @@ export class AppComponent implements OnInit {
   }
   actualizarDato(id:number,clienteDatosNuevo:ClienteInset) {
     console.log("datos resibidos",clienteDatosNuevo,id)
+    if (
+      !clienteDatosNuevo.primer_nombre ||
+      !clienteDatosNuevo.primer_apellido ||
+      !clienteDatosNuevo.segundo_apellido ||
+      !clienteDatosNuevo.direccion ||
+      !clienteDatosNuevo.correo ||
+      !clienteDatosNuevo.telefono
+    ) {
+      return;
+    }
 
     this.clienteservice.actualizar(id, clienteDatosNuevo).subscribe({
         next: (response) => {
